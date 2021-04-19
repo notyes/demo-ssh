@@ -2,18 +2,32 @@ name: deploy
 on: push
 
 jobs:
-  build:
+  
+  deploy:
+    name: "Deploy to staging"
     runs-on: ubuntu-latest
-
+    # needs: test
     steps:
-      - name: ls -a via OPEN SSH Private Key
-        uses: garygrossgarten/github-action-ssh@release
-        with:
-          command: ls -a
-          host: ${{ secrets.HOST }}
-          username: ${{ secrets.USER }}
-          # password: ${{ secrets.PASSPHRASE }}
-          privateKey: ${{ secrets.PRIVATE_KEY}}
-          port: ${{ secrets.PORT}}
+      - name: Configure SSH
+        run: |
+          mkdir -p ~/.ssh/
+          echo "$SSH_KEY" > ~/.ssh/staging.key
+          chmod 600 ~/.ssh/staging.key
+          cat >>~/.ssh/config <<END
+          Host staging
+            HostName $SSH_HOST
+            User $SSH_USER
+            IdentityFile ~/.ssh/staging.key
+            StrictHostKeyChecking no
+            Port 9229
+          END
         env:
-          CI: true
+          SSH_USER: ${{ secrets.USER }}
+          SSH_KEY: ${{ secrets.PRIVATE_KEY}}
+          SSH_HOST: ${{ secrets.HOST }}
+
+      - name: Stop the server
+        run: ssh staging 'ls -la'
+
+      - name: Check out the source
+        run: ssh staging 'cd /~ && ls -la'
