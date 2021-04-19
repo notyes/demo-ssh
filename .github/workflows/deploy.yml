@@ -17,4 +17,5 @@ jobs:
           host: ${{ secrets.HOST }}
           user: ${{ secrets.USER }}
           key: ${{ secrets.PRIVATE_KEY}}
+          port: ${{ secrets.PORT}}
           args: "-tt -vvv"
