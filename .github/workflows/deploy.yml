@@ -26,8 +26,6 @@ jobs:
           SSH_KEY: ${{ secrets.DATA_SSHKEY}}
           SSH_HOST: ${{ secrets.DATA_HOSTIP }}
 
-      - name: Stop the server
-        run: ssh staging 'ls -la'
+      - name: Git pull
+        run: ssh staging 'cd /home/nham/docker/www/demo-ssh && git pull'
 
-      - name: Check out the source
-        run: ssh staging 'cd /~ && ls -la'
