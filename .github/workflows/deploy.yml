@@ -1,21 +1,19 @@
 name: deploy
 on: push
 
-env:
-  FIRST_NAME: Mona
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
       - name: ls -a via OPEN SSH Private Key
-        uses: fifsky/ssh-action@master
+        uses: garygrossgarten/github-action-ssh@release
         with:
-          command: |
-            cd /~
-            ls -a
-            echo "env_var:$FIRST_NAME"
+          command: ls -a
           host: ${{ secrets.HOST }}
-          user: ${{ secrets.USER }}
-          key: ${{ secrets.PRIVATE_KEY}}
+          username: ${{ secrets.USER }}
+          # password: ${{ secrets.PASSPHRASE }}
+          privateKey: ${{ secrets.PRIVATE_KEY}}
           port: ${{ secrets.PORT}}
-          args: "-tt -vvv"
+        env:
+          CI: true
