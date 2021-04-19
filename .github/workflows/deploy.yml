@@ -22,9 +22,9 @@ jobs:
             Port 9229
           END
         env:
-          SSH_USER: ${{ secrets.USER }}
-          SSH_KEY: ${{ secrets.PRIVATE_KEY}}
-          SSH_HOST: ${{ secrets.HOST }}
+          SSH_USER: ${{ secrets.DATA_USER }}
+          SSH_KEY: ${{ secrets.DATA_SSHKEY}}
+          SSH_HOST: ${{ secrets.DATA_HOSTIP }}
 
       - name: Stop the server
         run: ssh staging 'ls -la'
