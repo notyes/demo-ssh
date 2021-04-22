@@ -28,7 +28,5 @@ jobs:
 
       - name: Git pull
         # run: ssh staging 'cd /home/nham/docker/www/demo-ssh && git pull'
-        run: ssh staging 'cd $PARTH && git pull'
-        env:
-          PARTH: ${{ secrets.DATA_PARTH }}
+        run: ssh staging 'cd ${{ secrets.DATA_PARTH }} && git pull'
 
